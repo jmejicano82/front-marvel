@@ -1,0 +1,27 @@
+
+<h1 class="text-center">{{title}}</h1>
+<div class="container">
+  <div class="row">
+
+    <form (ngSubmit)="submitSearch()">
+        <div class="form-group col-xs-12">
+            <input type="text" [(ngModel)]="searchString" name="searchString" class="form-control" id="search" placeholder="Búsqueda de super-héroe">
+        </div>
+    </form>
+
+    <div class="col-xs-12" *ngIf="arrayHeroes != []">
+        <div class="hero-entry" *ngFor="let heroe of arrayHeroes.heroes" class="col-xs-12 col-sm-6 col-md-3">
+            <a [routerLink]="['/heroe', heroe.id]" class="hero-entry" [style.background-image]="'url(' + heroe.thumbnail.path + '.' + heroe.thumbnail.extension + ')'">
+            <span>{{heroe.name}}</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="paginator col-xs-12" *ngIf="arrayHeroes != []">
+        <a class="paginator-prev" (click)="prevPage()">Prev</a>
+        Página {{arrayHeroes.page + 1}} de {{arrayHeroes.total}}
+        <a class="paginator-next" (click)="nextPage()" *ngIf="arrayHeroes.page < arrayHeroes.total - 1">Next</a>
+    </div>
+
+  </div>
+</div>
