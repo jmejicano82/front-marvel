@@ -10,13 +10,15 @@ import * as actions from './hero-list/hero-list.actions';
 
 export class HeroesService {
 
-  private protocol = 'https:';
-  private ApiUrl = '//gateway.marvel.com:443/v1/public/';
+  private protocol = 'http:';
+  private ApiUrl = '//localhost:3200/bff/v1/Api-Marvel-BFF/';
+  private Module = 'heroe/'
   public heroes: Array<Heroe>;
 
   public page = 0;
   public step = 20;
   public total = 0;
+  public teams = new Map();
 
   resetPager() {
       this.page = 0;
@@ -31,9 +33,10 @@ export class HeroesService {
     if (page || page === 0) {
       this.page = page;
     }
-    const url = this.protocol + this.ApiUrl + 'characters?apikey=56d2cc44b1c84eb7c6c9673565a9eb4b'
-    + '&offset=' + (this.page * this.step)
-    + (nameStartsWith ? ('&nameStartsWith=' + nameStartsWith) : '');
+    const method = "getAll/"
+    const url = this.protocol + this.ApiUrl + this.Module + method
+                 + (this.page * this.step) + "/" 
+                + (nameStartsWith ? nameStartsWith : '');
     this.http.get<any>(url).subscribe((data) => {
         this.heroes = [];
         this.total = Math.ceil(data.data.total / this.step);
@@ -45,17 +48,39 @@ export class HeroesService {
             result.modified,
             result.thumbnail,
             result.resourceURI,
-            ''
+            this.getTeamColor(result.id)
           ));
       });
-      this.store.dispatch(actions.loadHeroes({heroes: this.heroes}));
+      this.store.dispatch(actions.loadHeroes({heroes: this.heroes, page: this.page, total: this.total}));
     });
-    
   }
 
   getHeroe(id) {
-    const url = this.protocol + this.ApiUrl + 'characters/' + id + '?apikey=56d2cc44b1c84eb7c6c9673565a9eb4b';
+    const method = "getOne/"
+    const url = this.protocol + this.ApiUrl + this.Module + method + id;
     return this.http.get<any>(url);
+  }
+
+  setHeroeTeam(id: string, team: string) {
+    const method = "team"
+    const url = this.protocol + this.ApiUrl + this.Module + method + id;
+    let data = this.http.post<any>(url, { id: id, team: team });
+    console.log(data);
+    return data;
+  }
+
+  public group_colors = {"azul" : "#1f8ff7",
+            "violeta":"#a43de3",
+            "naranjo":"#df5c0f",
+            "verde":"#0ea521"}
+
+  getTeamColor(id):string{
+    if(this.teams.get(id)!=undefined){
+      return this.teams.get(id);
+    }
+    else{
+    return "";
+    }
   }
 
 }

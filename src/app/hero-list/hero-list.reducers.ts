@@ -4,25 +4,25 @@ import { Heroe } from '../classes/heroe';
 
 export interface heroeListState {
     heroes: Array<Heroe>;
-    loaded: boolean;
-    loading: boolean;
-    error: any;
+    page: number;
+    total: number;
 }
 
 const heroesInitialState: heroeListState = {
     heroes: [],
-    loaded: false,
-    loading: false,
-    error: null
+    page: null,
+    total: null,
 };
 
 const _heroesReducer = createReducer(
     heroesInitialState,
 
-    on(states.loadHeroes, (state, { heroes }) => ({
+    on(states.loadHeroes, (state, { heroes, page, total }) => ({
         ...state,
         loading: true,
-        heroes
+        heroes,
+        page,
+        total
     })),
 
 );

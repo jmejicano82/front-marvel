@@ -18,16 +18,16 @@
                     </div>
                     <div class="row">
                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
-                        <div class="group bg-blue to_the_left" (click)="send_team('azul')">Azul</div>
+                        <div class="group bg-blue to_the_left" [ngClass]="{'selected': team_selected=='azul'}" (click)="send_team('azul')">Azul</div>
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
-                        <div class="group bg-violet" (click)="send_team('violeta')">Violeta</div>
+                        <div class="group bg-violet" [ngClass]="{'selected': team_selected=='violeta'}" (click)="send_team('violeta')">Violeta</div>
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
-                        <div class="group bg-orange to_the_left" (click)="send_team('naranjo')">Naranjo</div>
+                        <div class="group bg-orange to_the_left" [ngClass]="{'selected': team_selected=='naranjo'}" (click)="send_team('naranjo')">Naranjo</div>
                       </div>
                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
-                        <div class="group bg-green" (click)="send_team('verde')">Verde</div>
+                        <div class="group bg-green" [ngClass]="{'selected': team_selected=='verde'}" (click)="send_team('verde')">Verde</div>
                       </div>
                     </div>
                 </div>
