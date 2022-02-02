@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Heroe } from './classes/heroe';
 import { Store } from '@ngrx/store';
-import * as actions from './hero-list/hero-list.actions';
+import * as actionHeroes from './hero-list/hero-list.actions';
+import * as actionHeroe from './hero-profile/hero-profile.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class HeroesService {
   private ApiUrl = '//localhost:3200/bff/v1/Api-Marvel-BFF/';
   private Module = 'heroe/'
   public heroes: Array<Heroe>;
+  public heroe: Heroe;
 
   public page = 0;
   public step = 20;
@@ -51,21 +53,25 @@ export class HeroesService {
             this.getTeamColor(result.id)
           ));
       });
-      this.store.dispatch(actions.loadHeroes({heroes: this.heroes, page: this.page, total: this.total}));
+      this.store.dispatch(actionHeroes.loadHeroes({heroes: this.heroes, page: this.page, total: this.total}));
     });
   }
 
   getHeroe(id) {
     const method = "getOne/"
     const url = this.protocol + this.ApiUrl + this.Module + method + id;
-    return this.http.get<any>(url);
+    this.http.get<any>(url).subscribe((data) => {
+      let temp = data.data.results[0];
+      this.heroe = new Heroe(temp.id, temp.name, temp.description, temp. modified, temp.thumbnail, temp.resourceURI,this.getTeamColor(temp.id));
+      this.store.dispatch(actionHeroe.loadHeroe({heroe: this.heroe}));
+    });
   }
 
   setHeroeTeam(id: string, team: string) {
     const method = "team"
     const url = this.protocol + this.ApiUrl + this.Module + method + id;
     let data = this.http.post<any>(url, { id: id, team: team });
-    console.log(data);
+    //console.log(data);
     return data;
   }
 

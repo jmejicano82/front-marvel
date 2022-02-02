@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -30,7 +30,6 @@ export class HeroListComponent implements OnInit, OnDestroy {
         .select('heroes')
         .subscribe((heroes) => {
           this.arrayHeroes = heroes;
-          console.log(heroes);
     });
     this.heroesService.getHeroes(this.searchString);
   }

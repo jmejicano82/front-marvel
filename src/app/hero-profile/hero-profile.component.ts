@@ -4,7 +4,8 @@ import { Heroe } from '../classes/heroe';
 import { HeroesService } from '../heroes.service';
 import { Location } from '@angular/common';
 import { ModalPollComponent } from '../ui/modal-poll/modal-poll.component';
-
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-hero-profile',
@@ -18,22 +19,28 @@ export class HeroProfileComponent implements OnInit {
   public question_modal: string;
   public team:string = "";
   @ViewChild('modal') modal: ModalPollComponent;
+  public heroeSubs: Subscription; 
 
 
   constructor(
     private route: ActivatedRoute,
     private heroesService: HeroesService, 
-    private _location: Location
+    private _location: Location,
+    private store: Store<{ heroe: Heroe }>
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.id = params.id;
-      this.heroesService.getHeroe(this.id).subscribe(data => {
-        const temp = data.data.results[0];
-        this.heroe = new Heroe(temp.id, temp.name, temp.description, temp. modified, temp.thumbnail, temp.resourceURI,this.heroesService.getTeamColor(temp.id));
+      this.heroeSubs = this.store
+        .select('heroe')
+        .subscribe((stateHero) => {
+          if(stateHero){
+            this.heroe = stateHero.heroe;
+          }
       });
+      this.heroesService.getHeroe(params.id);
     });
+    
   }
 
   goBack() {

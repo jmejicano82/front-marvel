@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { heroesReducer } from './hero-list/hero-list.reducers';
+import { heroeReducer } from './hero-profile/hero-profile.reducers';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { heroesReducer } from './hero-list/hero-list.reducers';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    StoreModule.forRoot({heroes: heroesReducer})
+    StoreModule.forRoot({heroes: heroesReducer, heroe: heroeReducer})
   ],
   providers: [HeroesService],
   bootstrap: [AppComponent]

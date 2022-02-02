@@ -1,4 +1,5 @@
 export class Heroe {
+    heroe: Heroe;
     constructor(
         public id: string,
         public name: string,

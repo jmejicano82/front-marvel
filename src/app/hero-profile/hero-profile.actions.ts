@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Heroe } from '../classes/heroe';
 
-export const loadHeroes = createAction(
+export const loadHeroe = createAction(
     '[Users] Load Heroes',
-    props<{ heroes: Array<Heroe>, page: number, total: number }>()
+    props<{ heroe: Heroe}>()
 );
